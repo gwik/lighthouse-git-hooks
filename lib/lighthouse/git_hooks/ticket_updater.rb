@@ -26,7 +26,6 @@ module Lighthouse::GitHooks
     
     def parse
       @commits.each do |commit|
-      
         commit.message.scan(/\[#([0-9]+)\s+(.*?)\]/) do |match|
           @changes << parse_ticket(commit, match[0], match[1])
         end
@@ -35,8 +34,12 @@ module Lighthouse::GitHooks
     end
     
     def send_changes
+      
       @changes.each do |hash_ticket|
         commit = hash_ticket.delete 'commit'
+        
+        Configuration.login(commit.committer.email)
+        
         begin
           puts "updating ticket ##{hash_ticket['number']}"
           ticket = Lighthouse::Ticket.find(hash_ticket['number'], :params => {:project_id => Configuration[:project_id]})
@@ -70,7 +73,6 @@ module Lighthouse::GitHooks
     protected
 
     def parse_ticket(commit, number, params)
-      puts "#{number} , #{params}"
       ticket = {'number' => number.to_i, 'commit' => commit}
       params.scan(/(\w+):(\w+|'.*?')/) do |key, value|
         ticket[key] = value.gsub(/^["'](.*)["']$/, '\1') if AUTHORIZED_KEYS.include?(key)
