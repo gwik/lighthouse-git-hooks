@@ -1,6 +1,6 @@
 [submodule "lighthouse-api"]
-	path = lighthouse-api
+	path = vendor/lighthouse-api
 	url = git://github.com/Caged/lighthouse-api.git
 [submodule "grit"]
-	path = grit
+	path = vendor/grit
 	url = git://github.com/mojombo/grit.git
