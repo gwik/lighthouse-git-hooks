@@ -1,17 +1,19 @@
+require 'yaml'
+
 module Lighthouse::GitHooks
     
   class Configuration
     
     @@config = nil
-    @@config_file_path = File.dirname(__FILE__) + '/config.yml'
+    @@users = nil
     
-    REQUIRED_KEYS = [:project_id, :account, :token, :repository_path]
+    REQUIRED_KEYS = [:project_id, :account, :repository_path]
     
     class << self
-      def load(path=@@config_file_path)
-        @@config = YAML.load_file(path).symbolize_keys
+      def load(config_path)
+        @@config = YAML.load_file(config_path + '/general.yml').symbolize_keys
+        load_users(config_path + '/users')
         check!
-        run
         @@config
       end
       
@@ -19,12 +21,27 @@ module Lighthouse::GitHooks
         @@config[key]
       end
       
-      def run
+      def users
+        @@users
+      end
+      
+      def login(git_user_email)
+        nick, user = @@users.find{|k,v| v[:email] == git_user_email}
+        raise "user not found #{git_user_email}" if user.nil?
         Lighthouse.account = @@config[:account]
-        Lighthouse.token = @@config[:token]
+        Lighthouse.token = user[:token]
+        user
       end
       
       protected
+      
+      def load_users(dir)
+        @@users = {}
+        Dir.open(dir).entries.grep(/\.yml$/) do |entry|
+          @@users[entry[/^(.*)\.yml$/, 1].to_sym] = YAML.load_file(dir + '/' + entry).symbolize_keys
+        end
+        @@users
+      end
       
       def check!
         missing = REQUIRED_KEYS - @@config.keys
