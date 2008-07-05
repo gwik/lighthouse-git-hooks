@@ -1,6 +1,12 @@
 #! /usr/bin/env ruby
-require File.dirname(__FILE__) + "/../lib/lighthouse/git_hooks"
+
+####### EDIT ME !!!! ######
+CONFIG_DIR = "/Users/gwik/dev/lighthouse-git-hooks/config"
+LIB_DIR = "/Users/gwik/dev/lighthouse-git-hooks" 
+###########################
+
+require LIB_DIR + "/lib/lighthouse/git_hooks"
 include Lighthouse::GitHooks
 
-Configuration.load(File.dirname(__FILE__) + "/../config.yml")
+Configuration.load(CONFIG_DIR)
 TicketUpdate.new(ARGV[0], ARGV[1]).parse.send_changes

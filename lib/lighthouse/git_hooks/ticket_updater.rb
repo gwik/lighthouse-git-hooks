@@ -46,9 +46,9 @@ module Lighthouse::GitHooks
             when 'number'
               # do nothing
             when 'assign'
-              # if user_id = find_user(value.strip)
-              #   ticket.assigned_user_id = user_id
-              # end
+              if user_id = find_user(value.strip)
+                ticket.assigned_user_id = user_id
+              end
             when 'tags'
               ticket.tags = (ticket.tags + value.split(' ')).uniq
               puts "tags: #{ticket.tags.inspect}"
@@ -76,6 +76,12 @@ module Lighthouse::GitHooks
         ticket[key] = value.gsub(/^["'](.*)["']$/, '\1') if AUTHORIZED_KEYS.include?(key)
       end
       ticket
+    end
+    
+    def find_user(nick)
+      user = Configuration.users[nick.to_sym]
+      raise "user not found #{nick}" unless user
+      user.id
     end
     
   end
