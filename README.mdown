@@ -1,0 +1,28 @@
+# Lighthouse git hooks
+
+© 2008 Antonin Amand
+
+License MIT
+
+For bug reports or improvements please go to the
+[Lighthouse](http://lighthouse-git-hooks.lighthouseapp.com)
+
+For anything else feel free to contact me : gwik@gwikzone.org
+
+## Setup
+
+First you will need the following gems :
+
+- activeresource
+- activesupport
+
+Setup the configuration, see *spec/config_spec* for an example configuration directory
+
+In the git repository that you push on :
+
+	cp host/post-receive.rb (.git/)hooks/post-receive
+	chmod +x (.git/)hooks/post-receive
+	
+edit (.git/)hooks/post-receive
+set CONFIG_DIR to the directory path where you set up the configuration
+set LIB to lighthouse-git-hooks repository
