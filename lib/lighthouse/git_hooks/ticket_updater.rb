@@ -10,15 +10,15 @@ module Lighthouse::GitHooks
   end # Base
 
   class TicketUpdate < Base
-
-    attr_accessor :message
+    
     attr_reader :tickets
     attr_reader :real_tickets
 
     AUTHORIZED_KEYS = [ 'assign', 'state', 'tags', 'untag']
 
-    def initialize(old_rev, new_rev)
+    def initialize(old_rev, new_rev, ref=nil)
       super()
+      @ref = ref
       @commits = @repo.commits_between(old_rev, new_rev)
       @message = ""
       @changes = []
@@ -42,7 +42,8 @@ module Lighthouse::GitHooks
         
         begin
           puts "updating ticket ##{hash_ticket['number']}"
-          ticket = Lighthouse::Ticket.find(hash_ticket['number'], :params => {:project_id => Configuration[:project_id]})
+          ticket = Lighthouse::Ticket.find(hash_ticket['number'], :params => 
+            {:project_id => Configuration[:project_id]})
 
           hash_ticket.each_pair do |key, value|
             case key
@@ -61,7 +62,7 @@ module Lighthouse::GitHooks
               ticket.send "#{key}=".to_sym, value 
             end
           end
-          ticket.body = message
+          ticket.body = build_message(commit)
           ticket.save
         rescue ActiveResource::ResourceNotFound => e
           puts "ticket not found ##{hash_ticket['number']} : #{e.message}"
@@ -71,7 +72,15 @@ module Lighthouse::GitHooks
     end
 
     protected
-
+    
+    def build_message(commit)
+      message = commit.message
+      diffs = []
+      commit.diffs.each { |d| diffs << d.diff unless d.diff.empty? }
+      message << "\n\n<i>commit #{commit.id} on #{@ref}</i>\n"
+      message << "@@@\n#{diffs.join("\n")}\n@@@" unless diffs.empty?
+    end
+    
     def parse_ticket(commit, number, params)
       ticket = {'number' => number.to_i, 'commit' => commit}
       params.scan(/(\w+):(\w+|'.*?')/) do |key, value|

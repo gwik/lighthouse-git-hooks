@@ -11,4 +11,4 @@ include Lighthouse::GitHooks
 rev_old, rev_new, ref = STDIN.read.split(" ")
 
 Configuration.load(CONFIG_DIR)
-TicketUpdate.new(rev_old, rev_new).parse.send_changes
+TicketUpdate.new(rev_old, rev_new, ref).parse.send_changes
