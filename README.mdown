@@ -4,10 +4,23 @@
 
 License MIT
 
+Lighthouse git hooks provide git hooks for closing tickets in your git commit message.
+
+Syntax :
+
+	# close ticket 3
+	[#3 state:resolved]
+	
+	# assign ticket 4 to someone else
+	[#4 state:open assign:joe]
+
+
 For bug reports or improvements please go to the
 [Lighthouse](http://gwikzone.lighthouseapp.com/projects/13833-lighthouse-git-hooks)
 
 For anything else feel free to contact me : gwik@gwikzone.org
+
+[Known bugs](http://gwikzone.lighthouseapp.com/projects/13833/milestones/14257-bugs)
 
 ## Setup
 
