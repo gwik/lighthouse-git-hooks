@@ -33,7 +33,7 @@ Setup the configuration, see *spec/config_spec* for an example configuration dir
 
 In the git repository that you push on :
 
-	cp host/post-receive.rb (.git/)hooks/post-receive
+	cp host/post-receive (.git/)hooks/post-receive
 	chmod +x (.git/)hooks/post-receive
 	
 	edit (.git/)hooks/post-receive

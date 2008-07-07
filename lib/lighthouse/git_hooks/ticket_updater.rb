@@ -15,11 +15,15 @@ module Lighthouse::GitHooks
     attr_reader :real_tickets
 
     AUTHORIZED_KEYS = [ 'assign', 'state', 'tags', 'untag']
-
+    
     def initialize(old_rev, new_rev, ref=nil)
       super()
       @ref = ref
-      @commits = @repo.commits_between(old_rev, new_rev)
+      
+      # suppress merge replay
+      # git rev-list --first-parent commit1 commit2
+      @commits = Grit::Commit.find_all @repo, "#{old_rev}..#{new_rev}", :first_parent => true
+      
       @message = ""
       @changes = []
     end
