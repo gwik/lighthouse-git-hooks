@@ -29,7 +29,7 @@ First you will need the following gems :
 - activeresource
 - activesupport
 
-Setup the configuration, see *spec/config_spec* for an example configuration directory
+Setup the configuration, see *spec/config_test* for an example configuration directory
 
 In the git repository that you push on :
 
