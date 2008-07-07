@@ -29,11 +29,11 @@ First you will need the following gems :
 - activeresource
 - activesupport
 
-Setup the configuration, see *spec/config_spec* for an example configuration directory
+Setup the configuration, see *spec/config_test* for an example configuration directory
 
 In the git repository that you push on :
 
-	cp host/post-receive (.git/)hooks/post-receive
+	cp hooks/post-receive (.git/)hooks/post-receive
 	chmod +x (.git/)hooks/post-receive
 	
 	edit (.git/)hooks/post-receive
