@@ -22,7 +22,8 @@ module Lighthouse::GitHooks
       
       # suppress merge replay
       # git rev-list --first-parent commit1 commit2
-      @commits = Grit::Commit.find_all @repo, "#{old_rev}..#{new_rev}", :first_parent => true
+      @commits = Grit::Commit.find_all @repo, "#{old_rev}..#{new_rev}", 
+        :first_parent => true, :no_merges => true
       
       @message = ""
       @changes = []
