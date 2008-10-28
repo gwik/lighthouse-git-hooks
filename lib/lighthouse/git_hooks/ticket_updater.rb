@@ -83,7 +83,8 @@ module Lighthouse::GitHooks
       diffs = []
       commit.diffs.each { |d| diffs << d.diff unless d.diff.empty? }
       message << "\n\n<i>commit #{commit.id} on #{@ref}</i>\n"
-      message << "@@@\n#{diffs.join("\n")}\n@@@" unless diffs.empty?
+      message << "@@@\n#{diffs.join("\n")}\n@@@" if Configuration[:include_diffs] && !diffs.empty?
+      message
     end
     
     def parse_ticket(commit, number, params)
