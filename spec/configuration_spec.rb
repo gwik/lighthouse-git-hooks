@@ -52,6 +52,11 @@ describe Configuration do
     
   end
   
+  it "should have default value for :include_diffs set to true" do
+    Configuration.load(File.dirname(__FILE__) + '/config_test')
+    Configuration[:include_diffs].should be_true
+  end
+  
   it "allow access to params through []" do
     Configuration.load(File.dirname(__FILE__) + '/config_test')
     

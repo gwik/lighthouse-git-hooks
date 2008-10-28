@@ -8,10 +8,11 @@ module Lighthouse::GitHooks
     @@users = nil
     
     REQUIRED_KEYS = [:project_id, :account, :repository_path]
+    DEFAULT_OPTIONS = {:include_diffs => true}
     
     class << self
       def load(config_path)
-        @@config = YAML.load_file(config_path + '/general.yml').symbolize_keys
+        @@config = DEFAULT_OPTIONS.merge(YAML.load_file(config_path + '/general.yml').symbolize_keys)
         load_users(config_path + '/users')
         check!
         @@config
