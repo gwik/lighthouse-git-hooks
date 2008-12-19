@@ -6,7 +6,7 @@ License MIT
 
 Lighthouse git hooks provide git hooks for closing tickets in your git commit message.
 
-Syntax :
+## Syntax
 
 	# close ticket 3
 	[#3 state:resolved]
@@ -22,12 +22,30 @@ For anything else feel free to contact me : gwik@gwikzone.org
 
 [Known bugs](http://gwikzone.lighthouseapp.com/projects/13833/milestones/14257-bugs)
 
+## Installation
+
+	# Install these gems if you don't already have them:
+	sudo gem install activeresource
+	sudo gem install activesupport
+	sudo gem install mime-types
+	sudo gem install open4
+
+	# Install and initialize this project:
+	git clone git://github.com/gwik/lighthouse-git-hooks.git
+	cd lighthouse-git-hooks.git
+	git submodule init
+	git submodule update
+	
+	# Create your config directory, so it can be referenced from the post-receive file:
+	cp -r spec/config_test config
+	
+	edit config/general.yml and insert your values from lighthouse
+	cd config/users
+	mv gwik.yml your_name.yml
+	edit your_name.yml and insert your values from lighthouse
+	create a some_name.yml file for each other code committer on your git project
+
 ## Setup
-
-First you will need the following gems :
-
-- activeresource
-- activesupport
 
 Setup the configuration, see *spec/config_test* for an example configuration directory
 
